@@ -1,21 +1,24 @@
-import { IsNotEmpty, IsNumber, IsString, Matches } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Matches,
+} from 'class-validator';
 import { MessagesHelper } from '../../helpers/message.helper';
 import { RegexHelper } from '../../helpers/regex.helper';
-import { Role } from '../entities/role.enum';
-import { ApiProperty } from '@nestjs/swagger';
+import { Role } from '../models/role.enum';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ description: 'Nome completo do usuário.' })
-  readonly nome: string;
-  @IsString()
-  readonly matricula: string;
+  @ApiProperty({ description: MessagesHelper.USER_NAME_DESCRIPTION })
+  readonly name: string;
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ description: 'Nome para acesso do usuário.' })
-  readonly login: string;
-  @IsString()
+  @ApiProperty({ description: MessagesHelper.USER_EMAIL_DESCRIPTION })
+  @IsEmail()
   readonly email: string;
   @IsString()
   @IsNotEmpty()
@@ -23,8 +26,11 @@ export class CreateUserDto {
   @Matches(RegexHelper.password, {
     message: MessagesHelper.PASSWORD_VALID,
   })
-  readonly senha: string;
+  readonly password: string;
   @IsNumber()
-  @ApiProperty({ description: 'Nível de acesso do usuário.', default: 5 })
-  readonly roles: Role;
+  @ApiPropertyOptional({
+    description: MessagesHelper.USER_ROLES_DESCRIPTION,
+    default: 4,
+  })
+  readonly roles: Role = 4;
 }

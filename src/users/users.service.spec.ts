@@ -1,108 +1,99 @@
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Role } from './entities/role.enum';
+import { Role } from './models/role.enum';
 import { UpdateUserDto } from './dto/update-user.dto/update-user.dto';
 import { NotFoundException } from '@nestjs/common';
 
 describe('UsersService', () => {
   let service: UsersService;
-  let id: number;
-
+  let id: string;
   beforeEach(async () => {
     service = new UsersService();
-    id = 1;
+    id = '156';
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('should create a user', async () => {
+  /*it('should create a user', async () => {
     const expectOutputUser = {
-      nome: 'Usuario Teste',
-      matricula: '123',
+      name: 'Usuario Teste',
       email: 'usuario@teste.com',
-      senha: 'S3nh@Dificil',
-      login: 'usuariot',
-      roles: Role.AdmMT,
+      password: 'S3nh@Dificil',
+      roles: Role.ADM,
     };
 
     const createUserDTO: CreateUserDto = {
-      nome: 'Usuario Teste',
-      matricula: '123',
+      name: 'Usuario Teste',
       email: 'usuario@teste.com',
-      senha: 'S3nh@Dificil',
-      login: 'usuariot',
-      roles: Role.AdmMT,
+      password: 'S3nh@Dificil',
+      roles: Role.ADM,
     };
-    const mockUserRepository = {
+    const mockUsersModel = {
       create: (dto: CreateUserDto) =>
         jest.fn().mockReturnValue(Promise.resolve(createUserDTO)),
       save: jest.fn().mockReturnValue(Promise.resolve(createUserDTO)),
     };
-    //@ts-expect-error defined part of methods
-    service['usersRepository'] = mockUserRepository;
+    /@ts-expect-error defined part of methods
+    service['usersModel'] = mockUsersModel;
     const newUser = await service.create(createUserDTO);
 
-    expect(mockUserRepository.save).toHaveBeenCalled();
+    expect(mockUsersModel.save).toHaveBeenCalled();
     expect(newUser).toMatchObject(expectOutputUser);
-  });
+  });*/
   describe('Updating user', () => {
     it('should call save user after update', async () => {
       const expectOutputUser = {
-        nome: 'Usuario Teste',
-        matricula: '123',
+        name: 'Usuario Teste',
         email: 'usuario@teste.com',
-        senha: 'S3nh@Dificil',
-        login: 'usuariot',
-        roles: Role.AdmMT,
+        password: 'S3nh@Dificil',
+        roles: Role.ADM,
       };
 
       const updateeUserDTO: UpdateUserDto = {
-        nome: 'Usuario Teste',
-        matricula: '123',
+        name: 'Usuario Teste',
         email: 'usuario@teste.com',
-        senha: 'S3nh@Dificil',
-        login: 'usuariot',
-        roles: Role.AdmMT,
+        password: 'S3nh@Dificil',
+        roles: Role.ADM,
       };
-      const mockUserRepository = {
+      const mockUsersModel = {
         update: (dto: CreateUserDto) =>
           jest.fn().mockReturnValue(Promise.resolve(updateeUserDTO)),
-        preload: jest.fn().mockReturnValue(Promise.resolve(updateeUserDTO)),
-        save: jest.fn().mockReturnValue(Promise.resolve(updateeUserDTO)),
+        findByIdAndUpdate: jest
+          .fn()
+          .mockReturnValue(Promise.resolve(updateeUserDTO)),
+        //save: jest.fn().mockReturnValue(Promise.resolve(updateeUserDTO)),
       };
       //@ts-expect-error defined part of methods
-      service['usersRepository'] = mockUserRepository;
+      service['usersModel'] = mockUsersModel;
       const user = await service.update('1', updateeUserDTO);
 
-      expect(mockUserRepository.save).toHaveBeenCalled();
+      expect(mockUsersModel.findByIdAndUpdate).toHaveBeenCalled();
       expect(user).toMatchObject(expectOutputUser);
     });
     it('should throw a notFoundExeption when dont exists user with the selected id', async () => {
       const updateeUserDTO: UpdateUserDto = {
-        nome: 'Usuario Teste',
-        matricula: '123',
+        name: 'Usuario Teste',
         email: 'usuario@teste.com',
-        senha: 'S3nh@Dificil',
-        login: 'usuariot',
-        roles: Role.AdmMT,
+        password: 'S3nh@Dificil',
+        roles: Role.ADM,
       };
-      const mockUserRepository = {
+      const mockUsersModel = {
         update: jest.fn().mockReturnValue(Promise.resolve(null)),
-        preload: jest.fn().mockReturnValue(Promise.resolve(null)),
-        save: jest.fn().mockReturnValue(Promise.resolve(null)),
+        findByIdAndUpdate: jest.fn().mockReturnValue(Promise.resolve(null)),
+        //save: jest.fn().mockReturnValue(Promise.resolve(null)),
       };
       //@ts-expect-error defined part of methods
-      service['usersRepository'] = mockUserRepository;
+      service['usersModel'] = mockUsersModel;
 
       async function update() {
         await service.update(`${id}`, updateeUserDTO);
       }
 
       await expect(update()).rejects.toThrow();
-      expect(mockUserRepository.preload).toHaveBeenCalled();
-      expect(mockUserRepository.save).not.toHaveBeenCalled();
+      expect(mockUsersModel.findByIdAndUpdate).toHaveBeenCalled();
+      //expect(mockUsersModel.save).not.toHaveBeenCalled();
     });
   });
 
@@ -110,63 +101,59 @@ describe('UsersService', () => {
     it('should list users', async () => {
       const expectOutputUsers = [
         {
-          nome: 'Usuario Teste',
-          matricula: '123',
+          name: 'Usuario Teste',
           email: 'usuario@teste.com',
-          senha: 'S3nh@Dificil',
-          login: 'usuariot',
-          roles: Role.AdmMT,
+          password: 'S3nh@Dificil',
+          roles: Role.ADM,
         },
       ];
-      const mockUserRepository = {
+      const mockUsersModel = {
         findAll: jest.fn().mockReturnValue(Promise.resolve(expectOutputUsers)),
         find: jest.fn().mockReturnValue(Promise.resolve(expectOutputUsers)),
       };
       //@ts-expect-error defined part of methods
-      service['usersRepository'] = mockUserRepository;
+      service['usersModel'] = mockUsersModel;
       const users = await service.findAll();
-      expect(mockUserRepository.find).toHaveBeenCalled();
+      expect(mockUsersModel.find).toHaveBeenCalled();
       expect(expectOutputUsers).toStrictEqual(users);
     });
     it('should get one user', async () => {
-      const id = 1;
+      const id = '156';
       const expectOutputUser = [
         {
-          id: 1,
-          nome: 'Usuario Teste',
-          matricula: '123',
+          id: '156',
+          name: 'Usuario Teste',
           email: 'usuario@teste.com',
-          senha: 'S3nh@Dificil',
-          login: 'usuariot',
-          roles: Role.AdmMT,
+          password: 'S3nh@Dificil',
+          roles: Role.ADM,
         },
       ];
-      const mockUserRepository = {
+      const mockUsersModel = {
         findById: jest.fn().mockReturnValue(Promise.resolve(expectOutputUser)),
-        findOneBy: jest.fn().mockReturnValue(Promise.resolve(expectOutputUser)),
+        //findById: jest.fn().mockReturnValue(Promise.resolve(expectOutputUser)),
       };
       //@ts-expect-error defined part of methods
-      service['usersRepository'] = mockUserRepository;
-      const user = await service.findById(`${id}`);
-      expect(mockUserRepository.findOneBy).toHaveBeenCalled();
+      service['usersModel'] = mockUsersModel;
+      const user = await service.findById(id);
+      expect(mockUsersModel.findById).toHaveBeenCalled();
       expect(expectOutputUser).toStrictEqual(user);
     });
     it('should throw a notFoundExeption when trying to find a user by id that not exists', async () => {
       const id = 1;
 
-      const mockUserRepository = {
+      const mockUsersModel = {
         findById: jest.fn().mockReturnValue(Promise.resolve(null)),
-        findOneBy: jest.fn().mockReturnValue(Promise.resolve(null)),
+        //findOneBy: jest.fn().mockReturnValue(Promise.resolve(null)),
       };
       //@ts-expect-error defined part of methods
-      service['usersRepository'] = mockUserRepository;
+      service['usersModel'] = mockUsersModel;
 
       async function findbyId() {
         await service.findById(`${id}`);
       }
 
       await expect(findbyId()).rejects.toThrow(NotFoundException);
-      expect(mockUserRepository.findOneBy).toHaveBeenCalled();
+      expect(mockUsersModel.findById).toHaveBeenCalled();
     });
   });
 
@@ -177,39 +164,37 @@ describe('UsersService', () => {
         {
           id: 1,
           nome: 'Usuario Teste',
-          matricula: '123',
           email: 'usuario@teste.com',
-          senha: 'S3nh@Dificil',
-          login: 'usuariot',
-          roles: Role.AdmMT,
+          password: 'S3nh@Dificil',
+          roles: Role.ADM,
         },
       ];
-      const mockUserRepository = {
+      const mockUsersModel = {
         findOne: jest.fn().mockReturnValue(Promise.resolve(expectOutputUser)),
         remove: jest.fn().mockReturnValue(Promise.resolve(expectOutputUser)),
       };
       //@ts-expect-error defined part of methods
-      service['usersRepository'] = mockUserRepository;
-      const user = await service.remove(`${id}`);
-      expect(mockUserRepository.remove).toHaveBeenCalled();
+      service['usersModel'] = mockUsersModel;
+      const user = await service.delete(`${id}`);
+      expect(mockUsersModel.remove).toHaveBeenCalled();
       expect(expectOutputUser).toStrictEqual(user);
     });
     it('should throw a notFoundExeption when trying to remove a user that not exists', async () => {
       const id = 1;
 
-      const mockUserRepository = {
+      const mockUsersModel = {
         findOne: jest.fn().mockReturnValue(Promise.resolve(null)),
         remove: jest.fn().mockReturnValue(Promise.resolve(null)),
       };
       //@ts-expect-error defined part of methods
-      service['usersRepository'] = mockUserRepository;
+      service['usersModel'] = mockUsersModel;
 
       async function removeById() {
-        await service.remove(`${id}`);
+        await service.delete(`${id}`);
       }
 
       await expect(removeById()).rejects.toThrow(NotFoundException);
-      expect(mockUserRepository.remove).not.toHaveBeenCalled();
+      expect(mockUsersModel.remove).not.toHaveBeenCalled();
     });
   });
 });

@@ -11,43 +11,108 @@ import {
   Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
+import { User } from './models/user.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto/update-user.dto';
-import { UseGuards } from '@nestjs/common/decorators';
+import { Patch, UseGuards } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../decorators/roles.decorator';
-import { Role } from './entities/role.enum';
+import { Role } from './models/role.enum';
 import {
   ApiBearerAuth,
   ApiForbiddenResponse,
+  ApiOperation,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import {
+  IndexUsersSwagger,
+  UserFindSwagger,
+  InvalidPasswordResponse,
+} from './swagger/index-users.swagger';
+import { UsersMsgSwagger } from './swagger/swagger-messages.helper';
+import { MessagesHelper } from '../helpers/message.helper';
 
 @Controller('api/users')
-@UseGuards(AuthGuard('jwt'))
-@ApiForbiddenResponse({ description: 'Access denied.' })
-@Roles(Role.AdmMT, Role.Dev)
 @ApiTags('Users')
-@ApiBearerAuth('jwt')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @Get('all')
-  findAll(): Promise<Array<User>> {
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('jwt') //Without this decorator in every method, Swagger won't send the auth header.
+  @ApiForbiddenResponse({ description: 'Access denied.' })
+  @Roles(Role.ADM, Role.STAF)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: UsersMsgSwagger.ALL_SUMMARY })
+  @ApiResponse({
+    status: 200,
+    description: UsersMsgSwagger.ALL_200,
+    type: UserFindSwagger,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 400,
+    description: MessagesHelper.ACCESS_DENIED,
+  })
+  findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
   @Get(':id')
-  findByName(@Param('id') id: string): Promise<User> | HttpException {
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('jwt')
+  @ApiForbiddenResponse({ description: 'Access denied.' })
+  @Roles(Role.ADM, Role.STAF)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: UsersMsgSwagger.FIND_USER_SUMMARY })
+  @ApiResponse({
+    status: 200,
+    description: UsersMsgSwagger.FIND_USER_200,
+    type: IndexUsersSwagger,
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: MessagesHelper.ACCESS_DENIED,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: UsersMsgSwagger.USER_NOT_FOUND,
+  })
+  findById(@Param('id') id: string): Promise<User> | HttpException {
     const user = this.usersService.findById(id);
     return user;
   }
-  @ApiResponse({ status: 409, description: 'Login already exist.' })
   @Post()
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: UsersMsgSwagger.CREATE_SUMMARY })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: UsersMsgSwagger.CREATE_200,
+    type: IndexUsersSwagger,
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: UsersMsgSwagger.CREATE_400,
+    type: InvalidPasswordResponse,
+  })
+  @ApiResponse({ status: 409, description: UsersMsgSwagger.CREATE_409 })
   create(@Body() body: CreateUserDto): Promise<User> | HttpException {
     return this.usersService.create(body);
   }
-  @Put(':id')
+  @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('jwt')
+  @ApiForbiddenResponse({ description: 'Access denied.' })
+  @Roles(Role.ADM)
+  @ApiOperation({ summary: UsersMsgSwagger.UPDATE_SUMMARY })
+  @ApiResponse({ status: 200, description: UsersMsgSwagger.UPDATE_200 })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: UsersMsgSwagger.USER_NOT_FOUND,
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: MessagesHelper.ACCESS_DENIED,
+  })
   update(
     @Param('id') id: string,
     @Body() body: UpdateUserDto,
@@ -55,9 +120,23 @@ export class UsersController {
     return this.usersService.update(id, body);
   }
 
-  @Delete(':id')
+  @Delete(':email')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('jwt')
+  @ApiForbiddenResponse({ description: 'Access denied.' })
+  @Roles(Role.ADM)
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id') id: string) {
-    return await this.usersService.remove(id);
+  @ApiOperation({ summary: UsersMsgSwagger.REMOVE_SUMMARY })
+  @ApiResponse({ status: 200, description: UsersMsgSwagger.REMOVE_200 })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: UsersMsgSwagger.USER_NOT_FOUND,
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: MessagesHelper.ACCESS_DENIED,
+  })
+  async remove(@Param('email') email: string) {
+    return await this.usersService.delete(email);
   }
 }

@@ -1,7 +1,12 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  BadRequestException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../../decorators/roles.decorator';
-import { Role } from '../../users/entities/role.enum';
+import { Role } from '../../users/models/role.enum';
 import { verify, JwtPayload } from 'jsonwebtoken';
 
 @Injectable()
@@ -17,17 +22,19 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    let token = context.switchToHttp().getRequest().get('authorization');
+    const authHeader = context.switchToHttp().getRequest().get('authorization');
+    if (!authHeader)
+      throw new BadRequestException('Missing authorization token');
     const tokenPayload = process.env.TOKEN_KEY;
     if (!tokenPayload) throw new Error('Token key is not set');
-    if (token) {
-      token = token.slice(7);
-      verify(token, tokenPayload, (error: unknown, decode: JwtPayload) => {
-        if (typeof decode === 'object') {
-          userData = decode;
-        }
-      });
-    }
+
+    const token = authHeader.slice(7);
+    verify(token, tokenPayload, (error: unknown, decode: JwtPayload) => {
+      if (typeof decode === 'object') {
+        userData = decode;
+      }
+    });
+
     //verifica se a autoridade de acesso do usuário
     if (userData) return requiredRoles.some((role) => userData.role === role);
     return false;

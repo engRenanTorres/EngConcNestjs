@@ -1,22 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
-import { UsersModule } from '../../src/users/users.module';
-import { AuthModule } from '../../src/auth/auth.module';
-import { DatabaseModule } from '../../src/database/database.module';
-import { User } from '../../src/users/entities/user.entity';
-import { Role } from '../../src/users/entities/role.enum';
+import { Role } from '../../src/users/models/role.enum';
 import { CreateUserDto } from '../../src/users/dto/create-user.dto';
 import { UpdateUserDto } from '../../src/users/dto/update-user.dto/update-user.dto';
-import { LocalStrategy } from '../../src/strategies/local.strategy';
-import { JwtStrategy } from '../../src/strategies/jwt.strategy';
-import { AuthService } from '../../src/auth/auth.service';
-import { ConfigModule } from '@nestjs/config';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
-import { APP_GUARD } from '@nestjs/core';
 import { AppModule } from '../../src/app.module';
-import { RolesGuard } from '../../src/auth/guard/role.guard';
 
 describe('Users: /users (e2e)', () => {
   let app: INestApplication;
@@ -24,11 +12,9 @@ describe('Users: /users (e2e)', () => {
   let auth: string;
 
   const user: CreateUserDto = {
-    nome: 'Rodrigo',
-    login: 'rodrigo',
-    roles: Role.OperadorCC2,
-    senha: 'TestBolado3!',
-    matricula: '9081',
+    name: 'Rodrigo',
+    roles: Role.READER,
+    password: 'TestBolado3!',
     email: 'rod@rod.com.br',
   };
 
@@ -80,9 +66,9 @@ describe('Users: /users (e2e)', () => {
         .set('Authorization', `Bearer ${auth}`);
       id = createResponse.body.id;
       const expectedUser = {
-        nome: 'Rodrigo',
+        name: 'Rodrigo',
         login: 'rodrigo',
-        roles: Role.OperadorCC2,
+        roles: Role.READER,
         matricula: '9081',
         email: 'rod@rod.com.br',
       };
@@ -96,8 +82,8 @@ describe('Users: /users (e2e)', () => {
   it('should denny access to update (PUT) /users', async () => {
     const updateUser: UpdateUserDto = {
       ...user,
-      nome: 'Augusto',
-      senha: undefined,
+      name: 'Augusto',
+      password: undefined,
     };
 
     const updateTest = async () => {
@@ -111,8 +97,8 @@ describe('Users: /users (e2e)', () => {
   it('should update (PUT) /users', async () => {
     const updateUser: UpdateUserDto = {
       ...user,
-      nome: 'Augusto',
-      senha: undefined,
+      name: 'Augusto',
+      password: undefined,
     };
 
     const updateTest = async () => {
@@ -123,10 +109,8 @@ describe('Users: /users (e2e)', () => {
         .expect(HttpStatus.OK)
         .then(({ body }) => {
           const expectedUser = {
-            nome: 'Augusto',
-            login: 'rodrigo',
-            roles: Role.OperadorCC2,
-            matricula: '9081',
+            name: 'Augusto',
+            roles: Role.READER,
             email: 'rod@rod.com.br',
           };
 
