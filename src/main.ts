@@ -5,6 +5,9 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 import { config } from 'dotenv';
+import { UnauthorizedInterceptor } from './common/errors/interceptors/unauthorized.interceptor';
+import { NotFoundInterceptor } from './common/errors/interceptors/notfound.interceptor';
+import { DatabaseInterceptor } from './common/errors/interceptors/database.interceptor';
 //import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
 
 config({
@@ -46,6 +49,9 @@ async function bootstrap() {
   //transform tipa o objeto diretamento com o seu dto
 
   //app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalInterceptors(new UnauthorizedInterceptor());
+  app.useGlobalInterceptors(new NotFoundInterceptor());
+  app.useGlobalInterceptors(new DatabaseInterceptor());
   await app.listen(process.env.APP_PORT);
 }
 bootstrap();

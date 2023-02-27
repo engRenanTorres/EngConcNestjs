@@ -8,7 +8,7 @@ import {
 import { User } from './models/user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { MongoError } from 'typeorm';
+import { NotFoundError } from '../common/errors/types/NotFoundError';
 
 @Injectable()
 export class UsersService {
@@ -40,6 +40,7 @@ export class UsersService {
       const user = new this.usersModel(createUserDTO); // Cria o objeto sem salvar no bd
       return await user.save();
     } catch (error) {
+      console.log(error.code);
       if (error.message.includes('E11000'))
         throw new NotAcceptableException(error.message);
       throw new Error(error.message);
@@ -63,7 +64,7 @@ export class UsersService {
 
   private checkIfUserExiste(user: object, id: string) {
     if (!user) {
-      throw new NotFoundException(`User not found by id ${id}`);
+      throw new NotFoundError(`User not found by id ${id}`);
     }
   }
 }
