@@ -4,10 +4,20 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { SigninDTO } from '../users/dto/signin.dto';
 import { User } from '../users/models/user.model';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiProperty,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 interface ReqLocal extends Request {
   user: User;
+}
+
+class LoginResponse {
+  @ApiProperty()
+  token: string;
 }
 
 @Controller('api/auth')
@@ -18,6 +28,14 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Responsável por emitir o token para logar nas api.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Login realizado com sucesso',
+    type: LoginResponse,
+  })
   async login(
     @Body() signinDTO: SigninDTO,
     @Req() req: ReqLocal,

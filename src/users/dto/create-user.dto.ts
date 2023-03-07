@@ -8,7 +8,7 @@ import {
 import { MessagesHelper } from '../../helpers/message.helper';
 import { RegexHelper } from '../../helpers/regex.helper';
 import { Role } from '../models/role.enum';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @IsString()
@@ -34,3 +34,5 @@ export class CreateUserDto {
   })
   readonly roles: Role = 4;
 }
+
+export class CreateDefaltUserDto extends OmitType(CreateUserDto, ['roles']) {}

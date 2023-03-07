@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './models/user.model';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateDefaltUserDto, CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto/update-user.dto';
 import { Patch, UseGuards } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
@@ -95,7 +95,7 @@ export class UsersController {
     type: InvalidPasswordResponse,
   })
   @ApiResponse({ status: 409, description: UsersMsgSwagger.CREATE_409 })
-  create(@Body() body: CreateUserDto): Promise<User> | HttpException {
+  create(@Body() body: CreateDefaltUserDto): Promise<User> | HttpException {
     return this.usersService.create(body);
   }
   @Patch(':id')

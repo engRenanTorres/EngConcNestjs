@@ -6,4 +6,6 @@ export interface User extends Document {
   email: string;
   password: string;
   roles: Role;
+  createdAt: number;
+  lastUpdateAt: number;
 }

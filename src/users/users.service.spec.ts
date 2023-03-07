@@ -16,32 +16,35 @@ describe('UsersService', () => {
     expect(service).toBeDefined();
   });
 
-  /*it('should create a user', async () => {
+  /*it('should create a default user/ READER', async () => {
     const expectOutputUser = {
       name: 'Usuario Teste',
       email: 'usuario@teste.com',
       password: 'S3nh@Dificil',
-      roles: Role.ADM,
+      roles: Role.READER,
     };
 
     const createUserDTO: CreateUserDto = {
       name: 'Usuario Teste',
       email: 'usuario@teste.com',
       password: 'S3nh@Dificil',
-      roles: Role.ADM,
+      roles: Role.READER,
     };
     const mockUsersModel = {
       create: (dto: CreateUserDto) =>
         jest.fn().mockReturnValue(Promise.resolve(createUserDTO)),
-      save: jest.fn().mockReturnValue(Promise.resolve(createUserDTO)),
+      collection: {
+        insertOne: jest.fn().mockReturnValue(Promise.resolve({ _id: '156' })),
+      },
     };
-    /@ts-expect-error defined part of methods
+    //@ts-expect-error defined part of methods
     service['usersModel'] = mockUsersModel;
     const newUser = await service.create(createUserDTO);
 
-    expect(mockUsersModel.save).toHaveBeenCalled();
+    expect(mockUsersModel.collection.insertOne).toHaveBeenCalled();
     expect(newUser).toMatchObject(expectOutputUser);
   });*/
+
   describe('Updating user', () => {
     it('should call save user after update', async () => {
       const expectOutputUser = {
@@ -55,7 +58,6 @@ describe('UsersService', () => {
         name: 'Usuario Teste',
         email: 'usuario@teste.com',
         password: 'S3nh@Dificil',
-        roles: Role.ADM,
       };
       const mockUsersModel = {
         update: (dto: CreateUserDto) =>
@@ -72,12 +74,12 @@ describe('UsersService', () => {
       expect(mockUsersModel.findByIdAndUpdate).toHaveBeenCalled();
       expect(user).toMatchObject(expectOutputUser);
     });
+
     it('should throw a notFoundExeption when dont exists user with the selected id', async () => {
       const updateeUserDTO: UpdateUserDto = {
         name: 'Usuario Teste',
         email: 'usuario@teste.com',
         password: 'S3nh@Dificil',
-        roles: Role.ADM,
       };
       const mockUsersModel = {
         update: jest.fn().mockReturnValue(Promise.resolve(null)),

@@ -6,10 +6,13 @@ export const UsersSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  roles: { type: Number },
+  roles: { type: Number, default: 4 },
+  createdAt: { type: Number },
+  lastUpdateAt: { type: Number },
 });
 
 UsersSchema.pre('save', async function (next) {
+  this['createdAt'] = Date.now();
   try {
     if (!this.isModified('password')) {
       return next();
