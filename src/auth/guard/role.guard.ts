@@ -18,7 +18,6 @@ export class RolesGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    let userData: JwtPayload;
     if (!requiredRoles) {
       return true;
     }
@@ -29,6 +28,7 @@ export class RolesGuard implements CanActivate {
     if (!tokenPayload) throw new Error('Token key is not set');
 
     const token = authHeader.slice(7);
+    let userData: JwtPayload;
     verify(token, tokenPayload, (error: unknown, decode: JwtPayload) => {
       if (typeof decode === 'object') {
         userData = decode;

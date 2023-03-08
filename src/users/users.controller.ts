@@ -8,11 +8,10 @@ import {
   HttpStatus,
   Param,
   Post,
-  Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './models/user.model';
-import { CreateDefaltUserDto, CreateUserDto } from './dto/create-user.dto';
+import { CreateDefaltUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto/update-user.dto';
 import { Patch, UseGuards } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';

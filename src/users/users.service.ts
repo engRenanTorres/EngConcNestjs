@@ -18,7 +18,7 @@ export class UsersService {
   }
 
   async findById(id: string): Promise<User> {
-    const user = await this.usersModel.findById({ id: Number(id) });
+    const user = await this.usersModel.findById({ _id: id });
     this.checkIfUserExiste(user, id);
     return user;
   }

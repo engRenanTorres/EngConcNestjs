@@ -1,5 +1,4 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { Role } from '../models/role.enum';
 
 export class IndexUsersSwagger {
   @ApiProperty()
@@ -9,7 +8,7 @@ export class IndexUsersSwagger {
   @ApiProperty()
   password: string;
   @ApiProperty()
-  roles: Role;
+  roles: number;
 }
 
 export class UserFindSwagger extends OmitType(IndexUsersSwagger, [
