@@ -23,8 +23,6 @@ export class AuthService {
       role: user.roles,
     };
 
-    //console.log('user', user);
-
     return {
       token: this.jwtService.sign(payload, {}),
     };
@@ -55,7 +53,6 @@ export class AuthService {
       );
     }
     const decodedToken = this.jwtService.decode(accessToken) as TokenPayload;
-    console.log('decodedToken', decodedToken);
 
     let user: User;
     try {
