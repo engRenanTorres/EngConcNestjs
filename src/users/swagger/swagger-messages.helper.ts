@@ -1,4 +1,4 @@
-import { MessagesHelper } from 'src/helpers/message.helper';
+import { MessagesHelper } from '../../../src/helpers/message.helper';
 
 export const UsersMsgSwagger = {
   ALL_200: 'Lista retornada com sucesso.',
