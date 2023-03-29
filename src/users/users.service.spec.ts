@@ -49,11 +49,6 @@ describe('UsersService', () => {
     });
 
     it('should throw a database error if there is an error saving the user', async () => {
-      const mockError = new Error('Database error');
-      const mockModel = jest.fn().mockImplementation(() => ({
-        save: jest.fn().mockRejectedValue(mockError),
-      }));
-
       await expect(service.create(mockUserDTO)).rejects.toThrow(DataBaseError);
     });
   });
