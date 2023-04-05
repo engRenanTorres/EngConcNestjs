@@ -4,9 +4,11 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { QuestionsModule } from './questions/questions.module';
 
 @Module({
   imports: [
+    QuestionsModule,
     UsersModule,
     AuthModule,
     MongooseModule.forRoot(

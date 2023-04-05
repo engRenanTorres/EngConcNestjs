@@ -126,7 +126,10 @@ export class UsersController {
   @Roles(Role.ADM)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: UsersMsgSwagger.REMOVE_SUMMARY })
-  @ApiResponse({ status: 200, description: UsersMsgSwagger.REMOVE_200 })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: UsersMsgSwagger.REMOVE_200,
+  })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: UsersMsgSwagger.USER_NOT_FOUND,

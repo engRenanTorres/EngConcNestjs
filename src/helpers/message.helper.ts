@@ -9,4 +9,8 @@ export const MessagesHelper = {
     'A senha deve conter letras minúsculas e maiúsculas, números, caracters especiais e ser maior que 6 dígitos.',
   PASSWORD_CHECK: 'Usuário e/ou senha são inválidos.',
   ST_AREA_NOT_FOUND: 'Study area not found. Disered id: ',
+  QUESTION_TEXT_DESCRIPTION: 'Texto onde será inserida a pergunta da questão',
+  QUESTION_ANSWER_DESCRIPTION:
+    'Resposta da questão. Aceita apenas os resultados a, b, c, d, e, verdadeiro, falso',
+  ANSWER_VALID: 'Aceita apenas os resultados a, b, c, d, e, verdadeiro, falso',
 };
