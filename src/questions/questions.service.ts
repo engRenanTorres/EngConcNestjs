@@ -17,17 +17,21 @@ export class QuestionsService {
   private readonly questionsModel: Model<Question>;
 
   async findAll(): Promise<Question[]> {
-    return this.questionsModel.find();
+    return this.questionsModel.find().populate('author', 'name email');
   }
 
   async findById(id: string): Promise<Question> {
-    const question = await this.questionsModel.findById({ _id: id });
+    const question = await this.questionsModel
+      .findById({ _id: id })
+      .populate('author', 'name email');
     this.checkIfQuestionExiste(question, id);
     return question;
   }
 
   async findByAuthor(authorId: string): Promise<Question> | null {
-    const question = await this.questionsModel.findOne({ author: authorId });
+    const question = await this.questionsModel
+      .findOne({ author: authorId })
+      .populate('author', 'name email');
     try {
       this.checkIfQuestionExiste(question, authorId);
     } catch (error) {

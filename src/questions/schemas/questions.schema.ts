@@ -5,12 +5,11 @@ export const QuestionsSchema = new mongoose.Schema({
   answer: { type: String, required: true },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'users',
+    ref: 'User',
     required: false,
   },
   choices: {
     type: {
-      types: String,
       a: String,
       b: String,
       c: String,
@@ -19,7 +18,6 @@ export const QuestionsSchema = new mongoose.Schema({
     },
     required: true,
   },
-  //author: { type: String, required: true },
   createdAt: { type: Number },
   lastUpdateAt: { type: Number },
 });

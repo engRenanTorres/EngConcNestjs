@@ -13,6 +13,8 @@ export class IndexQuestionsSwagger {
   lastUpdateAt: number;
   @ApiProperty()
   createdAt: number;
+  @ApiProperty()
+  author: string;
 }
 
 export class InvalidAnswerResponse {

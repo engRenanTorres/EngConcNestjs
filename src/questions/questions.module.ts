@@ -6,9 +6,13 @@ import { RolesGuard } from '../auth/guard/role.guard';
 import { MongooseModule } from '@nestjs/mongoose';
 import { QuestionsSchema } from './schemas/questions.schema';
 import { JwtModule } from '@nestjs/jwt';
+import { UsersSchema } from '../users/schemas/users.schema';
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'Question', schema: QuestionsSchema }]),
+    MongooseModule.forFeature([
+      { name: 'Question', schema: QuestionsSchema },
+      { name: 'User', schema: UsersSchema },
+    ]),
     JwtModule.register({
       privateKey: process.env.TOKEN_KEY,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION },

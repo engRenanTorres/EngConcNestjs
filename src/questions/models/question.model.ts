@@ -41,10 +41,7 @@ export class Choices {
   }
 }*/
 
-export type Choices = MultipleChoices;
-
-export type MultipleChoices = {
-  types: 'multiple' | 'truefalse';
+export type Choices = {
   a?: string;
   b?: string;
   c?: string;

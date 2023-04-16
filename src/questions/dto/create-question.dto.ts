@@ -19,4 +19,7 @@ export class CreateQuestionDto {
   @ApiProperty({ description: MessagesHelper.ANSWER_VALID })
   @IsObject()
   readonly choices?: Choices;
+  @ApiProperty({ description: MessagesHelper.ANSWER_VALID })
+  @IsString()
+  readonly author?: string;
 }
