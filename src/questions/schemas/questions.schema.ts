@@ -9,13 +9,16 @@ export const QuestionsSchema = new mongoose.Schema({
     required: false,
   },
   choices: {
-    type: {
-      a: String,
-      b: String,
-      c: String,
-      d: String,
-      e: String,
-    },
+    type: [String],
+    required: true,
+    unique: false,
+  },
+  tips: {
+    type: String,
+    required: false,
+  },
+  year: {
+    type: Number,
     required: true,
   },
   createdAt: { type: Number },

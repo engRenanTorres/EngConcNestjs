@@ -20,7 +20,7 @@ export class InvalidPasswordResponse {
   statusCode: 400;
   @ApiProperty()
   message: [
-    'A senha deve conter letras minúsculas e maiúsculas, números, caracters especiais e ser maior que 6 dígitos.',
+    'The password must includes Capital letter, lowercase, numbers, special caracters and have at least 6 digits.',
   ];
   @ApiProperty()
   error: 'Bad Request';

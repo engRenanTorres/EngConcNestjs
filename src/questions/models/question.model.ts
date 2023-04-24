@@ -5,13 +5,14 @@ export interface Question extends Document {
   _id?: string;
   text: string;
   answer: Answer;
-  choices?: Choices;
+  choices?: string[];
+  tip?: string;
   author?: User;
   createdAt: number;
   lastUpdateAt?: number;
 }
 
-export type Answer = 'a' | 'b' | 'c' | 'd' | 'e' | 'verdadeiro' | 'falso';
+export type Answer = 'a' | 'b' | 'c' | 'd' | 'e' | 'Correta' | 'Errada';
 
 /*export type ChoicesType = Choices;
 
@@ -41,10 +42,10 @@ export class Choices {
   }
 }*/
 
-export type Choices = {
+/*export type Choices = {
   a?: string;
   b?: string;
   c?: string;
   d?: string;
   e?: string;
-};
+};*/

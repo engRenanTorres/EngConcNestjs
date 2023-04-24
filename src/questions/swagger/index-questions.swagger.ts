@@ -1,12 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Answer, Choices } from '../models/question.model';
+import { Answer } from '../models/question.model';
 
 export class IndexQuestionsSwagger {
   _id: string;
   @ApiProperty()
   text: string;
   @ApiProperty()
-  choices: Choices;
+  tip: string;
+  @ApiProperty()
+  year: number;
+  @ApiProperty()
+  choices: string[];
   @ApiProperty()
   answer: Answer;
   @ApiProperty()
@@ -22,7 +26,7 @@ export class InvalidAnswerResponse {
   statusCode: 400;
   @ApiProperty()
   message: [
-    'O campo answer aceita apenas os resultados a, b, c, d, e, verdadeiro, falso',
+    'O campo answer aceita apenas os resultados a, b, c, d, e, Correta, Errada',
   ];
   @ApiProperty()
   error: 'Bad Request';

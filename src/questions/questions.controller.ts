@@ -61,10 +61,10 @@ export class QuestionsController {
   //@ApiForbiddenResponse({ description: 'Access denied.' })
   //@Roles(Role.ADM, Role.STAF)
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: QuestionsMsgSwagger.FIND_USER_SUMMARY })
+  @ApiOperation({ summary: QuestionsMsgSwagger.FIND_QUESTION_SUMMARY })
   @ApiResponse({
     status: 200,
-    description: QuestionsMsgSwagger.FIND_USER_200,
+    description: QuestionsMsgSwagger.FIND_QUESTION_200,
     type: IndexQuestionsSwagger,
   })
   @ApiResponse({
@@ -73,7 +73,7 @@ export class QuestionsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: QuestionsMsgSwagger.USER_NOT_FOUND,
+    description: QuestionsMsgSwagger.QUESTION_NOT_FOUND,
   })
   findById(@Param('id') id: string): Promise<Question> | HttpException {
     const question = this.questionsService.findById(id);
@@ -112,7 +112,7 @@ export class QuestionsController {
   @ApiResponse({ status: 200, description: QuestionsMsgSwagger.UPDATE_200 })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: QuestionsMsgSwagger.USER_NOT_FOUND,
+    description: QuestionsMsgSwagger.QUESTION_NOT_FOUND,
   })
   @ApiResponse({
     status: HttpStatus.FORBIDDEN,
@@ -138,7 +138,7 @@ export class QuestionsController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: QuestionsMsgSwagger.USER_NOT_FOUND,
+    description: QuestionsMsgSwagger.QUESTION_NOT_FOUND,
   })
   @ApiResponse({
     status: HttpStatus.FORBIDDEN,

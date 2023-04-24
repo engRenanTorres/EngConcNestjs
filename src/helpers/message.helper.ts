@@ -11,6 +11,11 @@ export const MessagesHelper = {
   ST_AREA_NOT_FOUND: 'Study area not found. Disered id: ',
   QUESTION_TEXT_DESCRIPTION: 'Texto onde será inserida a pergunta da questão',
   QUESTION_ANSWER_DESCRIPTION:
-    'Resposta da questão. Aceita apenas os resultados a, b, c, d, e, verdadeiro, falso',
-  ANSWER_VALID: 'Aceita apenas os resultados a, b, c, d, e, verdadeiro, falso',
+    'Resposta da questão. Aceita apenas os resultados a, b, c, d, e, Correta, Errada',
+  CHOICES_VALID:
+    'Array das opções. O tamanho pode ser de 0 a 5. Se for passado um array vazio, as opções serão Verdadeiro, ou Falso.',
+  ANSWER_VALID: 'Aceita apenas os resultados a, b, c, d, e, Correta, Errada',
+  TIP_DESCRIPTION: 'Tips to explains the answers of the questions.',
+  YEAR_DESCRIPTION:
+    'Year that the test was applied. Min. value is 2010 and the Max is the actual year.',
 };
