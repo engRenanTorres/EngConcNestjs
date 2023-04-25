@@ -5,12 +5,14 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { QuestionsModule } from './questions/questions.module';
+import { InstitutesModule } from './institute/institutes.module';
 
 @Module({
   imports: [
+    AuthModule,
+    InstitutesModule,
     QuestionsModule,
     UsersModule,
-    AuthModule,
     MongooseModule.forRoot(
       process.env.NODE_ENV === 'test'
         ? process.env.MONGO_URI_TEST

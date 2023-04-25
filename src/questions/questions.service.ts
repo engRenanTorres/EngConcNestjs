@@ -17,7 +17,10 @@ export class QuestionsService {
   private readonly questionsModel: Model<Question>;
 
   async findAll(): Promise<Question[]> {
-    return this.questionsModel.find().populate('author', 'name email');
+    return this.questionsModel
+      .find()
+      .populate('author', 'name email')
+      .populate('institute', 'name about website');
   }
 
   async findById(id: string): Promise<Question> {

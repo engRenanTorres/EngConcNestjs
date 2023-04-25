@@ -6,12 +6,17 @@ export const QuestionsSchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: false,
+    required: true,
   },
   choices: {
     type: [String],
     required: true,
     unique: false,
+  },
+  institute: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Institute',
+    required: true,
   },
   tips: {
     type: String,

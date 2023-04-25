@@ -1,5 +1,6 @@
 import { Document } from 'mongoose';
 import { User } from '../../users/models/user.model';
+import { Institute } from '../../institute/models/institute.model';
 
 export interface Question extends Document {
   _id?: string;
@@ -7,7 +8,8 @@ export interface Question extends Document {
   answer: Answer;
   choices?: string[];
   tip?: string;
-  author?: User;
+  author: User;
+  institute: Institute;
   createdAt: number;
   lastUpdateAt?: number;
 }

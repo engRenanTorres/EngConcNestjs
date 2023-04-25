@@ -19,15 +19,15 @@ export class IndexQuestionsSwagger {
   createdAt: number;
   @ApiProperty()
   author: string;
+  @ApiProperty()
+  institute: string;
 }
 
 export class InvalidAnswerResponse {
   @ApiProperty()
   statusCode: 400;
   @ApiProperty()
-  message: [
-    'O campo answer aceita apenas os resultados a, b, c, d, e, Correta, Errada',
-  ];
+  message: ["The answer's field acepts only a, b, c, d, e, Correta, Errada."];
   @ApiProperty()
   error: 'Bad Request';
 }

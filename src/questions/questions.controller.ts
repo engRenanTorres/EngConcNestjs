@@ -48,10 +48,6 @@ export class QuestionsController {
     type: IndexQuestionsSwagger,
     isArray: true,
   })
-  @ApiResponse({
-    status: 400,
-    description: MessagesHelper.ACCESS_DENIED,
-  })
   findAll(): Promise<Question[]> {
     return this.questionsService.findAll();
   }
@@ -66,10 +62,6 @@ export class QuestionsController {
     status: 200,
     description: QuestionsMsgSwagger.FIND_QUESTION_200,
     type: IndexQuestionsSwagger,
-  })
-  @ApiResponse({
-    status: HttpStatus.FORBIDDEN,
-    description: MessagesHelper.ACCESS_DENIED,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

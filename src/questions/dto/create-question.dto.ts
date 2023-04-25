@@ -31,7 +31,12 @@ export class CreateQuestionDto {
   readonly choices: string[];
   @ApiProperty({ description: MessagesHelper.ANSWER_VALID })
   @IsString()
-  readonly author?: string;
+  @IsNotEmpty()
+  readonly author: string;
+  @ApiProperty({ description: MessagesHelper.ANSWER_VALID })
+  @IsString()
+  @IsNotEmpty()
+  readonly institute: string;
   @ApiProperty({
     description: MessagesHelper.TIP_DESCRIPTION,
   })
